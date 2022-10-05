@@ -61,19 +61,22 @@ public class CryptoManager {
 		//check whether string is in bounds, if so, continue
 		if(isStringInBounds(plainText)) 
 		{
-			//result and key variables
+			//result, encryptedChar variables
 			String result = "";
-			int keyCopy = key;
+			char encryptedChar = 0;
 			
-			//check whether key is outside bounds, if so, reduce key until it is in bounds
-			while(keyCopy > 95)
-				key-=64;
 			
 			//for each character in plainText, offset the character by the number in key, 
-			//cast it into char, then add it to result
+			//cast it into char, then set to encryptedChar 
 			for(int i = 0; i < plainText.length(); i++)
-				result += (char) (plainText.charAt(i) + key);
+			{
+				encryptedChar = (char) (plainText.charAt(i) + key);
 			
+			//check whether encryptedChar is higher than upper range, if so, subtract range until it is
+				while(encryptedChar > UPPER_RANGE)
+					encryptedChar -= RANGE;
+				result += encryptedChar;
+			}
 			//return result
 			return result;
 		}
@@ -152,18 +155,22 @@ public class CryptoManager {
 		//check whether string is in bounds, if so, continue
 		if(isStringInBounds(encryptedText)) 
 		{
-			//variables for result and key
+			//variables for result and encryptedChar
 			String result = "";
-			int keyCopy = key;
+			int encryptedInt = 0;
 			
-			//check whether key is outside bounds, if so, reduce key until it's in bounds
-			while(keyCopy > 95)
-				key-=64;
 				
 			//for each character in encryptedText, subtract key from current character in encryptedText, then cast to char
 			for(int i = 0; i < encryptedText.length(); i++)
-				result += (char) (encryptedText.charAt(i) - key);
+			{
+				encryptedInt = (encryptedText.charAt(i) - key);
 
+				//check whether encryptedInt is within range, if not, add range to encryptedChar until it is
+				while(encryptedInt < LOWER_RANGE)
+					encryptedInt += RANGE;
+				result += (char) encryptedInt;
+			}
+			
 			//return result
 			return result;
 		}
